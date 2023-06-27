@@ -86,6 +86,9 @@ impl From<RawTypedJson> for RawPrismaValue {
             ("decimal", Number(n)) => RawPrismaValue::Decimal(
                 bigdecimal::BigDecimal::try_from(n.as_f64().unwrap()).unwrap(),
             ),
+            ("decimal", String(s)) => RawPrismaValue::Decimal(
+                bigdecimal::BigDecimal::parse_bytes(s.as_bytes(), 10).unwrap(),
+            ),
             ("json", v) => RawPrismaValue::Json(v),
             ("xml", String(s)) => RawPrismaValue::Xml(s),
             ("uuid", String(s)) => {
